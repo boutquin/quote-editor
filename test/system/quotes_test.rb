@@ -1,8 +1,12 @@
 require "application_system_test_case"
 
 class QuotesTest < ApplicationSystemTestCase
+  include ApplicationHelper
+
   setup do
-    # We need to order quote as well in the system tests
+    # We need to sign in as a user to access the quotes
+    login_as users(:accountant)
+    # We need to get a quote to test
     @quote = Quote.ordered.first
   end
 
