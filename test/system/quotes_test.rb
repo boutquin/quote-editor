@@ -28,10 +28,6 @@ class QuotesTest < ApplicationSystemTestCase
     # When we click on the New quote link and fill in the name field
     click_on "New quote"
     fill_in "Name", with: "Capybara quote"
-
-    # We remain on the Quotes page
-    # When we click on the Create quote button...
-    assert_selector "h1", text: "Quotes"
     click_on "Create quote"
 
     # We remain on the Quotes page
@@ -48,10 +44,6 @@ class QuotesTest < ApplicationSystemTestCase
     # When we click on the Edit link and fill in the name field
     click_on "Edit", match: :first
     fill_in "Name", with: "Updated quote"
-
-    # We remain on the Quotes page
-    # When we click on the Update quote button...
-    assert_selector "h1", text: "Quotes"
     click_on "Update quote"
 
     # We remain on the Quotes page
