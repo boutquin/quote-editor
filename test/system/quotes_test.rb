@@ -2,64 +2,66 @@ require "application_system_test_case"
 
 class QuotesTest < ApplicationSystemTestCase
   setup do
-    @quote = quotes(:first) # Reference to the first fixture quote
+    # We need to order quote as well in the system tests
+    @quote = Quote.ordered.first
   end
 
-  test "Creating a new quote" do
-    # When we visit the Quotes#index page
-    # we expect to see a title with the text "Quotes"
+  test "Showing a quote" do
+    # When we visit the quotes_path, we can see the quote name
     visit quotes_path
     assert_selector "h1", text: "Quotes"
 
-    # When we click on the link with the text "New quote"
-    # we expect to land on a page with the title "New quote"
-    click_on "New quote"
-    assert_selector "h1", text: "New quote"
+    # When we click on the quote name, we see the quote details
+    click_link @quote.name
+    assert_selector "h1", text: @quote.name
+  end
 
-    # When we fill in the name input with "Capybara quote"
-    # and we click on "Create Quote"
+  test "Creating a new quote" do
+    # When we visit the quotes_path, we can see the Quotes header
+    visit quotes_path
+    assert_selector "h1", text: "Quotes"
+
+    # When we click on the New quote link and fill in the name field
+    click_on "New quote"
     fill_in "Name", with: "Capybara quote"
+
+    # We remain on the Quotes page
+    # When we click on the Create quote button...
+    assert_selector "h1", text: "Quotes"
     click_on "Create quote"
 
-    # We expect to be back on the page with the title "Quotes"
-    # and to see our "Capybara quote" added to the list
+    # We remain on the Quotes page
+    # And we see the new quote
     assert_selector "h1", text: "Quotes"
     assert_text "Capybara quote"
   end
 
-  test "Showing a quote" do
-    #`When we visit the Quotes#index page
-    # and we click on the first quote link`
-    visit quotes_path
-    click_link @quote.name
-
-    # We expect to land on a page with the title of the quote
-    assert_selector "h1", text: @quote.name
-  end
-
   test "Updating a quote" do
+    # When we visit the quotes_path, we can see the Quotes header
     visit quotes_path
     assert_selector "h1", text: "Quotes"
 
+    # When we click on the Edit link and fill in the name field
     click_on "Edit", match: :first
-    assert_selector "h1", text: "Edit quote"
-
-    # When we fill in the name input with "Updated quote"
     fill_in "Name", with: "Updated quote"
+
+    # We remain on the Quotes page
+    # When we click on the Update quote button...
+    assert_selector "h1", text: "Quotes"
     click_on "Update quote"
 
-    # We expect to be back on the page with the title "Quotes"
-    # and to see our "Updated quote" added to the list
+    # We remain on the Quotes page
+    # And we see the updated quote
     assert_selector "h1", text: "Quotes"
     assert_text "Updated quote"
   end
 
   test "Destroying a quote" do
+    # When we visit the quotes_path, we can see the quote name
     visit quotes_path
     assert_text @quote.name
 
-    # When we click on the "Delete" link of the first quote
-    # we expect the quote to be removed from the list
+    # When we click on the delete link, the quote is removed
     click_on "Delete", match: :first
     assert_no_text @quote.name
   end
